@@ -9,4 +9,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MyCms.DataLayer\MyCms.DataLayer.csproj" />
+    <ProjectReference Include="..\MyCms.DomainClasses\MyCms.DomainClasses.csproj" />
+  </ItemGroup>
+
 </Project>
