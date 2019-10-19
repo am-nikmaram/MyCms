@@ -7,23 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyCms.DataLayer.Context;
 using MyCms.DomainClasses.PageGroup;
+using MyCms.Services.Repositories;
 
 namespace MyCms.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class PageGroupsController : Controller
     {
-        private readonly MyCmsDbContext _context;
-
-        public PageGroupsController(MyCmsDbContext context)
+        private IPageGroupRepository _pageGroupRepository;
+        public PageGroupsController(IPageGroupRepository pageGroupRepository )
         {
-            _context = context;
+            _pageGroupRepository = pageGroupRepository;
         }
-
         // GET: Admin/PageGroups
         public async Task<IActionResult> Index()
         {
-            return View(await _context.PageGroups.ToListAsync());
+            return View(_pageGroupRepository.GetAllPageGroups());
         }
 
         // GET: Admin/PageGroups/Details/5
@@ -34,8 +33,7 @@ namespace MyCms.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var pageGroup = await _context.PageGroups
-                .FirstOrDefaultAsync(m => m.GroupID == id);
+            var pageGroup = _pageGroupRepository.GetPageGroupById(id.Value);
             if (pageGroup == null)
             {
                 return NotFound();
@@ -59,8 +57,8 @@ namespace MyCms.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pageGroup);
-                await _context.SaveChangesAsync();
+                _pageGroupRepository.InsertPageGroup(pageGroup);
+                _pageGroupRepository.save(); 
                 return RedirectToAction(nameof(Index));
             }
             return View(pageGroup);
@@ -74,7 +72,7 @@ namespace MyCms.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var pageGroup = await _context.PageGroups.FindAsync(id);
+            var pageGroup = _pageGroupRepository.GetPageGroupById(id.Value);
             if (pageGroup == null)
             {
                 return NotFound();
@@ -98,8 +96,8 @@ namespace MyCms.Web.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(pageGroup);
-                    await _context.SaveChangesAsync();
+                    _pageGroupRepository.UpdatePageGroup(pageGroup);
+                    _pageGroupRepository.save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -125,8 +123,7 @@ namespace MyCms.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var pageGroup = await _context.PageGroups
-                .FirstOrDefaultAsync(m => m.GroupID == id);
+            var pageGroup = _pageGroupRepository.GetPageGroupById(id.Value);
             if (pageGroup == null)
             {
                 return NotFound();
@@ -140,15 +137,14 @@ namespace MyCms.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pageGroup = await _context.PageGroups.FindAsync(id);
-            _context.PageGroups.Remove(pageGroup);
-            await _context.SaveChangesAsync();
+            _pageGroupRepository.DeletePageGroup(id);
+            _pageGroupRepository.save(); 
             return RedirectToAction(nameof(Index));
         }
 
         private bool PageGroupExists(int id)
         {
-            return _context.PageGroups.Any(e => e.GroupID == id);
+            return _pageGroupRepository.PageGroupExists(id);
         }
     }
 }

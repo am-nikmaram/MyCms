@@ -13,6 +13,7 @@ namespace MyCms.Services.Repositories
         void UpdatePageGroup(PageGroup pageGroup);
         void DeletePageGroup(int groupId);
         void DeletePageGroup(PageGroup pageGroup);
+        bool PageGroupExists(int pagegroupid);
         void save();
 
                

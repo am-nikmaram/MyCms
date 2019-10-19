@@ -45,6 +45,11 @@ namespace MyCms.Services.Services
             _db.PageGroups.Add(pageGroup);
         }
 
+        public bool PageGroupExists(int pagegroupid)
+        {
+            return _db.PageGroups.Any(p => p.GroupID == pagegroupid);
+        }
+
         public void save()
         {
             _db.SaveChanges();
