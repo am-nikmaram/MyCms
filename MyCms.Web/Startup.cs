@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyCms.DataLayer.Context;
+using MyCms.Services.Repositories;
+using MyCms.Services.Services;
 
 namespace MyCms.Web
 {
@@ -31,6 +33,9 @@ namespace MyCms.Web
             services.AddDbContext<MyCmsDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("MyCmsDbContext"))
             );
+
+            services.AddTransient<IPageRepository, PageRepository>();
+            services.AddTransient<IPageGroupRepository, PageGroupRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,7 +47,18 @@ namespace MyCms.Web
             }
 
             app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
+
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                  name: "areas",
+                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+                routes.MapRoute("Default", "{controller=Home}/{action=Index}/{id?}");
+            });
+
+
             app.Run(async (context) =>
             {
                 await context.Response.WriteAsync("Hello World!");

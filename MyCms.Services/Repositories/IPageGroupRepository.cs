@@ -9,11 +9,11 @@ namespace MyCms.Services.Repositories
     {
         List<PageGroup> GetAllPageGroups();
         PageGroup GetPageGroupById(int groupid);
-        int InsertPageGroup(PageGroup pageGroup);
+        void InsertPageGroup(PageGroup pageGroup);
         void UpdatePageGroup(PageGroup pageGroup);
         void DeletePageGroup(int groupId);
         void DeletePageGroup(PageGroup pageGroup);
-   
+        void save();
 
                
     }

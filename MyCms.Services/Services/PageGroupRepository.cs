@@ -1,8 +1,10 @@
-﻿using MyCms.DataLayer.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using MyCms.DataLayer.Context;
 using MyCms.DomainClasses.PageGroup;
 using MyCms.Services.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyCms.Services.Services
@@ -19,32 +21,38 @@ namespace MyCms.Services.Services
 
         public void DeletePageGroup(int groupId)
         {
-            throw new NotImplementedException();
+            var group = GetPageGroupById(groupId);
+            DeletePageGroup(group);
         }
 
         public void DeletePageGroup(PageGroup pageGroup)
         {
-            throw new NotImplementedException();
+            _db.Entry(pageGroup).State = EntityState.Deleted;
         }
 
         public List<PageGroup> GetAllPageGroups()
         {
-            throw new NotImplementedException();
+            return _db.PageGroups.ToList();
         }
 
         public PageGroup GetPageGroupById(int groupid)
         {
-            throw new NotImplementedException();
+            return _db.PageGroups.Find(groupid);
         }
 
-        public int InsertPageGroup(PageGroup pageGroup)
+        public void  InsertPageGroup(PageGroup pageGroup)
         {
-            throw new NotImplementedException();
+            _db.PageGroups.Add(pageGroup);
+        }
+
+        public void save()
+        {
+            _db.SaveChanges();
         }
 
         public void UpdatePageGroup(PageGroup pageGroup)
         {
-            throw new NotImplementedException();
+            _db.Entry(pageGroup).State = EntityState.Modified;
         }
     }
 }
