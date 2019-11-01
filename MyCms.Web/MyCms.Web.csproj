@@ -17,11 +17,13 @@
     <ProjectReference Include="..\MyCms.DataLayer\MyCms.DataLayer.csproj" />
     <ProjectReference Include="..\MyCms.DomainClasses\MyCms.DomainClasses.csproj" />
     <ProjectReference Include="..\MyCms.Services\MyCms.Services.csproj" />
+    <ProjectReference Include="..\MyCms.Utilities\MyCms.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="wwwroot\PageImages\" />
   </ItemGroup>
 
 </Project>

@@ -25,10 +25,12 @@ namespace MyCms.DomainClasses.Page
         [Display(Name = "توضیح مختصر")]
         [Required(ErrorMessage = "لطفاً {0} را وارد کنید")]
         [MaxLength(500)]
+        [DataType(DataType.MultilineText)]
         public string ShortDescription { get; set; }
 
         [Display(Name = "متن کامل")]
         [Required(ErrorMessage = "لطفاً {0} را وارد کنید")]
+        [DataType(DataType.MultilineText)]
         public string PageText { get; set; }
         [Display(Name = "بازدید")]
         public int PageVisit { get; set; }

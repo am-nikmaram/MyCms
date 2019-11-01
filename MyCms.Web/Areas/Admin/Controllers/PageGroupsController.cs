@@ -22,7 +22,7 @@ namespace MyCms.Web.Areas.Admin.Controllers
         // GET: Admin/PageGroups
         public async Task<IActionResult> Index()
         {
-            return View(_pageGroupRepository.GetAllPageGroups());
+            return View( _pageGroupRepository.GetAllPageGroups());
         }
 
         // GET: Admin/PageGroups/Details/5
