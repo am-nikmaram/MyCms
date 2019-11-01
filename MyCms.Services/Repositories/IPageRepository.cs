@@ -13,6 +13,7 @@ namespace MyCms.Services.Repositories
         void UpdatePage(Page page);
         void DeletePage(Page page);
         void DeletePage(int PageId);
+        bool PageExists(int pageId);
         void save();
 
     }

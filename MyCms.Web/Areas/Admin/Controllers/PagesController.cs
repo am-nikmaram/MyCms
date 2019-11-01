@@ -9,24 +9,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyCms.DataLayer.Context;
 using MyCms.DomainClasses.Page;
+using MyCms.Services.Repositories;
 
 namespace MyCms.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class PagesController : Controller
     {
-        private readonly MyCmsDbContext _context;
+        private IPageRepository _pageRepository;
+        private IPageGroupRepository _pageGroupRepository;
 
-        public PagesController(MyCmsDbContext context)
+        public PagesController(IPageRepository pageRepository,IPageGroupRepository pageGroupRepository)
         {
-            _context = context;
+            _pageRepository = pageRepository;
+            _pageGroupRepository = pageGroupRepository;
         }
 
         // GET: Admin/Pages
         public async Task<IActionResult> Index()
         {
-            var myCmsDbContext = _context.Pages.Include(p => p.PageGroup);
-            return View(await myCmsDbContext.ToListAsync());
+            var myCmsDbContext = _pageRepository.GetAllPage();
+            return View( myCmsDbContext);
         }
 
         // GET: Admin/Pages/Details/5
@@ -37,9 +40,7 @@ namespace MyCms.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var page = await _context.Pages
-                .Include(p => p.PageGroup)
-                .FirstOrDefaultAsync(m => m.PageID == id);
+            var page = _pageRepository.GetPageById(id.Value);
             if (page == null)
             {
                 return NotFound();
@@ -51,7 +52,7 @@ namespace MyCms.Web.Areas.Admin.Controllers
         // GET: Admin/Pages/Create
         public IActionResult Create()
         {
-            ViewData["GroupID"] = new SelectList(_context.PageGroups, "GroupID", "GroupTitle");
+            ViewData["GroupID"] = new SelectList(_pageGroupRepository.GetAllPageGroups(), "GroupID", "GroupTitle");
             return View();
         }
 
@@ -78,11 +79,11 @@ namespace MyCms.Web.Areas.Admin.Controllers
                     }
                 }
 
-                _context.Add(page);
-                await _context.SaveChangesAsync();
+                _pageRepository.InsertPage(page);
+                _pageRepository.save();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GroupID"] = new SelectList(_context.PageGroups, "GroupID", "GroupTitle", page.GroupID);
+            ViewData["GroupID"] = new SelectList(_pageGroupRepository.GetAllPageGroups(), "GroupID", "GroupTitle", page.GroupID);
             return View(page);
         }
 
@@ -94,12 +95,12 @@ namespace MyCms.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var page = await _context.Pages.FindAsync(id);
+            var page = _pageRepository.GetPageById(id.Value);
             if (page == null)
             {
                 return NotFound();
             }
-            ViewData["GroupID"] = new SelectList(_context.PageGroups, "GroupID", "GroupTitle", page.GroupID);
+            ViewData["GroupID"] = new SelectList(_pageGroupRepository.GetAllPageGroups(), "GroupID", "GroupTitle", page.GroupID);
             return View(page);
         }
 
@@ -133,8 +134,8 @@ namespace MyCms.Web.Areas.Admin.Controllers
                             imgup.CopyToAsync(stream);
                         }
                     }
-                    _context.Update(page);
-                    await _context.SaveChangesAsync();
+                    _pageRepository.UpdatePage(page);
+                    _pageRepository.save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -149,7 +150,7 @@ namespace MyCms.Web.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GroupID"] = new SelectList(_context.PageGroups, "GroupID", "GroupTitle", page.GroupID);
+            ViewData["GroupID"] = new SelectList(_pageGroupRepository.GetAllPageGroups(), "GroupID", "GroupTitle", page.GroupID);
             return View(page);
         }
 
@@ -161,9 +162,7 @@ namespace MyCms.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var page = await _context.Pages
-                .Include(p => p.PageGroup)
-                .FirstOrDefaultAsync(m => m.PageID == id);
+            var page = _pageRepository.GetPageById(id.Value);
             if (page == null)
             {
                 return NotFound();
@@ -177,15 +176,14 @@ namespace MyCms.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var page = await _context.Pages.FindAsync(id);
-            _context.Pages.Remove(page);
-            await _context.SaveChangesAsync();
+            _pageRepository.DeletePage(id);
+            _pageRepository.save();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PageExists(int id)
         {
-            return _context.Pages.Any(e => e.PageID == id);
+            return _pageRepository.PageExists(id); 
         }
     }
 }
