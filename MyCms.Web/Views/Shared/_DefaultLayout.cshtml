@@ -64,18 +64,7 @@
     <nav class="main-menu">
         <div class="container">
             <span><i class="fa fa-th-list"></i></span>
-            <ul>
-                <li><a href=""> صفحه اصلی </a></li>
-                <li>
-                    <span>گروه های خبری</span>
-                    <ul>
-                        <li><a href="">اخبار سیاسی</a></li>
-                        <li><a href="">اخبار فرهنگی</a></li>
-                        <li><a href="">اخبار اقتصادی</a></li>
-                        <li><a href="">اخبار اجتماعی</a></li>
-                    </ul>
-                </li>
-            </ul>
+            <partial name="_ShowGroupsInMenu" />
         </div>
     </nav>
     <!-- End menu -->
@@ -85,18 +74,7 @@
 
             <aside class="col-md-4 col-sm-12 col-xs-12 pull-right">
 
-                <section class="category-section border-radius">
-                    <header><i class="fa fa-folder-open-o"></i> <h3> دسته بندی ها </h3></header>
-                    <ul>
-                        <li><a href=""> خبر سایسی  <span>10</span></a></li>
-                        <li><a href=""> خبر اقتصادی  <span>15</span></a></li>
-                        <li><a href=""> خبر اجتماعی  <span>20</span></a></li>
-                        <li><a href=""> خبر سایسی  <span>10</span></a></li>
-                        <li><a href=""> خبر همینطوری  <span>15</span></a></li>
-                        <li><a href=""> خبر سایسی  <span>20</span></a></li>
-                        <li><a href=""> خبر سایسی  <span>10</span></a></li>
-                    </ul>
-                </section>
+                @await  Component.InvokeAsync("ShowGroupsComponent")
                 <!-- most views news -->
                 <section class="last-news-side border-radius">
                     <header><i class="icons icon-star"></i> <h3> پربازدیدترین اخبار </h3></header>

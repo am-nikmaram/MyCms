@@ -2,6 +2,7 @@
 using MyCms.DataLayer.Context;
 using MyCms.DomainClasses.PageGroup;
 using MyCms.Services.Repositories;
+using MyCms.ViewModels.Page;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,16 @@ namespace MyCms.Services.Services
         public List<PageGroup> GetAllPageGroups()
         {
             return _db.PageGroups.ToList();
+        }
+
+        public List<ShowGroupsViewModel> GetListGroups()
+        {
+            return _db.PageGroups.Select(g => new ShowGroupsViewModel()
+            {
+                GroupID = g.GroupID,
+                GroupTitle = g.GroupTitle,
+                PageCount = g.Pages.Count
+            }).ToList();
         }
 
         public PageGroup GetPageGroupById(int groupid)
