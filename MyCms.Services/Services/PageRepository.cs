@@ -33,9 +33,19 @@ namespace MyCms.Services.Services
             return _db.Pages.ToList();
         }
 
+        public IEnumerable<Page> GetLatestPage()
+        {
+            return _db.Pages.OrderByDescending(p => p.CreateDate).Take(4).ToList();
+        }
+
         public Page GetPageById(int pageId)
         {
             return _db.Pages.Find(pageId);
+        }
+
+        public IEnumerable<Page> GetPagesinSlider()
+        {
+            return _db.Pages.Where(p => p.ShowInSlider).ToList();
         }
 
         public IEnumerable<Page> GetTopPage(int take = 4)

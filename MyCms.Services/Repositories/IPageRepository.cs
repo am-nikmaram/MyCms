@@ -9,6 +9,8 @@ namespace MyCms.Services.Repositories
     {
         IEnumerable<Page> GetAllPage();
         IEnumerable<Page> GetTopPage(int take=4);
+        IEnumerable<Page> GetPagesinSlider();
+        IEnumerable<Page> GetLatestPage();
         Page GetPageById(int pageId);
         void InsertPage(Page page);
         void UpdatePage(Page page);
