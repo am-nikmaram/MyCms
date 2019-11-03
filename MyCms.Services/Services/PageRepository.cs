@@ -38,6 +38,11 @@ namespace MyCms.Services.Services
             return _db.Pages.Find(pageId);
         }
 
+        public IEnumerable<Page> GetTopPage(int take = 4)
+        {
+            return _db.Pages.OrderByDescending(p => p.PageTitle).Take(take).ToList();
+        }
+
         public void InsertPage(Page page)
         {
             _db.Pages.Add(page);
