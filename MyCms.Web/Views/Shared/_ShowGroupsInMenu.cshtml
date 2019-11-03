@@ -6,7 +6,7 @@
     <li>
         <span>گروه های خبری</span>
         <ul>
-            @foreach (var item in _groupRepository.GetAllPageGroups())
+            @foreach (var item in _groupRepository.GetListGroups())
             {
                 <li><a href="">@item.GroupTitle</a></li>
 
