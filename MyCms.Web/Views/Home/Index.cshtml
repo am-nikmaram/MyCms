@@ -18,9 +18,9 @@
         {
         <!-- each item -->
         <div class="item">
-            <img src="~/PageImages/@item.ImageName">
+            <img src="/PageImages/@item.ImageName">
             <div class="left-side">
-                <h2> <a href="">@item.PageTags</a> </h2>
+                <h2> <a href="/News/@item.PageID">@item.PageTitle</a> </h2>
                 <p>
                     @item.ShortDescription
                 </p>
@@ -44,7 +44,7 @@
         {
         <li>
             <img class="border-radius" src="~/PageImages/@item.ImageName">
-            <h2> <a href=""> @item.PageTitle </a></h2>
+            <h2> <a href="/News/@item.PageID"> @item.PageTitle </a></h2>
             <p>
                 @item.ShortDescription
             </p>

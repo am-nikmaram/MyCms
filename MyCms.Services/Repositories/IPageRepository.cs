@@ -11,6 +11,8 @@ namespace MyCms.Services.Repositories
         IEnumerable<Page> GetTopPage(int take=4);
         IEnumerable<Page> GetPagesinSlider();
         IEnumerable<Page> GetLatestPage();
+        IEnumerable<Page> GetPagesByGroupId(int groupId);
+        IEnumerable<Page> Search(string q);
         Page GetPageById(int pageId);
         void InsertPage(Page page);
         void UpdatePage(Page page);
