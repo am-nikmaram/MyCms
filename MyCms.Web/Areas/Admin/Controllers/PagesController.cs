@@ -75,7 +75,7 @@ namespace MyCms.Web.Areas.Admin.Controllers
 
                     using (var stream = new FileStream(savepath, FileMode.Create))
                     {
-                        imgup.CopyToAsync(stream);
+                      await  imgup.CopyToAsync(stream);
                     }
                 }
 
@@ -131,7 +131,7 @@ namespace MyCms.Web.Areas.Admin.Controllers
 
                         using (var stream = new FileStream(savepath, FileMode.Create))
                         {
-                            imgup.CopyToAsync(stream);
+                           await imgup.CopyToAsync(stream);
                         }
                     }
                     _pageRepository.UpdatePage(page);
@@ -176,7 +176,16 @@ namespace MyCms.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            _pageRepository.DeletePage(id);
+            var page =_pageRepository.GetPageById(id);
+            _pageRepository.DeletePage(page);
+            if(page.ImageName!=null)
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/PageImages", page.ImageName);
+                if(System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+            }
             _pageRepository.save();
             return RedirectToAction(nameof(Index));
         }

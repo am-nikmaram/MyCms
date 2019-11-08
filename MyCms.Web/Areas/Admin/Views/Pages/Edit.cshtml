@@ -41,6 +41,11 @@
                 <label asp-for="ImageName" class="control-label"></label>
                 <input type="file" name="imgup" />
                 <span asp-validation-for="ImageName" class="text-danger"></span>
+                @if(Model.ImageName!=null)
+                {
+                    <br/>
+                    <img src="/PageImages/@Model.ImageName" class="thumbnail" style="max-width: 250px"/>
+                }
             </div>
             <div class="form-group">
                 <label asp-for="PageTags" class="control-label"></label>
